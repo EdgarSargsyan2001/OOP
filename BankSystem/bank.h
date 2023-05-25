@@ -27,6 +27,7 @@ public:
     //
     void printCustomerinfo(int id);
     void printAllCustomerinfo();
+    void printAllCustomerHistory();
 
 private:
     std::vector<Customer> _arr;
@@ -90,5 +91,15 @@ void Bank::printAllCustomerinfo()
         _arr[i].printInfo();
     }
 }
-
+void Bank::printAllCustomerHistory()
+{
+    bool haveTransfer = false;
+    for (int i = 0; i < _arr.size(); ++i)
+    {
+        if (_arr[i].printTransferHistory())
+            haveTransfer = true;
+    }
+    if (!haveTransfer)
+        std::cout << "no transfers\n";
+}
 #endif

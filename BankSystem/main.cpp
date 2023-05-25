@@ -63,6 +63,7 @@ void commands(Bank &b)
         std::cout << ":2: find Customers  \n";
         std::cout << ":3: print Customer info with id \n";
         std::cout << ":4: print All Customer info \n";
+        std::cout << ":5: print All Customer History \n";
 
         std::cout << "enter comand ";
         int n;
@@ -84,8 +85,11 @@ void commands(Bank &b)
         case 4:
             b.printAllCustomerinfo();
             break;
-
+        case 5:
+            b.printAllCustomerHistory();
+            break;
         default:
+            std::cout << "command not found :(\n";
             break;
         }
     }
@@ -100,6 +104,7 @@ int main()
     ACBA.setCustomer(Customer("Ann", 19, 200));
     ACBA.setCustomer(Customer("Lilit", 22, 1800));
     ACBA.setCustomer(Customer("Edgar", 30, 20800));
+
     commands(ACBA);
     // std::cout << ACBA.getAllCustomerMony() << "\n";
 }
