@@ -1,5 +1,67 @@
 #include <iostream>
 #include "bank.h"
+#include <fstream>
+#include <string>
+
+std::vector<std::string> split(std::string str)
+{
+    std::vector<std::string> ans;
+    std::string word;
+    for (int i = 0; i < str.length(); ++i)
+    {
+        if (str[i] == ',')
+        {
+            ans.push_back(word);
+            word.clear();
+            continue;
+        }
+        word.push_back(str[i]);
+    }
+    ans.push_back(word);
+    return ans;
+}
+
+bool initFromFile(Bank &b)
+{
+    std::fstream fs;
+    fs.open("users.csv", std::ios::in);
+    if (!fs.is_open())
+    {
+        std::cout << "ERROR: can not open input file\n";
+        return false;
+    }
+
+    int line = 1;
+    std::string custInfo;
+    while (getline(fs, custInfo))
+    {
+
+        std::vector<std::string> info = split(custInfo);
+        if (info.size() != 3)
+        {
+            std::cout << "line: " << line << " has been ignored\n";
+            continue;
+        }
+
+        b.setCustomer(Customer(info[0], std::stoi(info[1]), std::stoi(info[2])));
+        line++;
+    }
+    fs.close();
+    return true;
+}
+bool saveInFile(Bank &b)
+{
+    std::fstream fs;
+    fs.open("users.csv", std::ios::out);
+    if (!fs.is_open())
+    {
+        std::cout << "ERROR: can not open output file\n";
+        return false;
+    }
+    b.outAllCustomersInfoToFile(fs);
+    fs.close();
+    return true;
+}
 
 void findCustomers(Bank &b)
 {
@@ -98,13 +160,17 @@ void commands(Bank &b)
 int main()
 {
     Bank ACBA(90000000);
-    ACBA.setCustomer(Customer("Edgar", 22, 2000));
-    ACBA.setCustomer(Customer("Narek", 18, 1500));
-    ACBA.setCustomer(Customer("Jon", 33, 1225));
-    ACBA.setCustomer(Customer("Ann", 19, 200));
-    ACBA.setCustomer(Customer("Lilit", 22, 1800));
-    ACBA.setCustomer(Customer("Edgar", 30, 20800));
+    // ==== add customers from file ====
+    if (!initFromFile(ACBA))
+    {
+        return 1;
+    };
 
     commands(ACBA);
-    // std::cout << ACBA.getAllCustomerMony() << "\n";
+
+    // ===== update info in file ====
+    if (!saveInFile(ACBA))
+    {
+        return 1;
+    };
 }

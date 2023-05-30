@@ -2,6 +2,7 @@
 #define BANK_H
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include "customer.h"
 
@@ -23,11 +24,11 @@ public:
 
     //
     bool transferMoney(int id1, int id2, int count);
-
     //
     void printCustomerinfo(int id);
     void printAllCustomerinfo();
     void printAllCustomerHistory();
+    void outAllCustomersInfoToFile(std::fstream &outFile);
 
 private:
     std::vector<Customer> _arr;
@@ -102,4 +103,13 @@ void Bank::printAllCustomerHistory()
     if (!haveTransfer)
         std::cout << "no transfers\n";
 }
+void Bank::outAllCustomersInfoToFile(std::fstream &outFile)
+{
+    for (int i = 0; i < _arr.size(); ++i)
+    {
+        outFile
+            << _arr[i].getName() << ',' << _arr[i].getAge() << ',' << _arr[i].getMony() << '\n';
+    }
+}
+
 #endif
