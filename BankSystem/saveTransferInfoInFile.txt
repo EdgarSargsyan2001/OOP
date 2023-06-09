@@ -1,0 +1,4 @@
+Edgar { id is 0 } transfer 1547 to Ann { id is 3 }
+Ann { id is 3 } receive 1547 from Edgar { id is 0 }
+Narek { id is 1 } transfer 2 to Ann { id is 3 }
+Ann { id is 3 } receive 2 from Narek { id is 1 }

@@ -43,6 +43,7 @@ public:
     //
     void printInfo() const;
     bool printTransferHistory() const;
+    void outTransferMoneyInfoToFile(std::fstream &outFile) const;
 
 private:
     std::string _name;
@@ -145,5 +146,17 @@ bool Customer::printTransferHistory() const
 
     return _transfer_history.size();
 }
+void Customer::outTransferMoneyInfoToFile(std::fstream &outFile) const
+{
+    for (auto obj : _transfer_history)
+    {
 
+        outFile << this->getName();
+        outFile << " { id is " << this->getId() << " }";
+        outFile << (obj.getORset ? " receive " : " transfer ");
+        outFile << obj.count << (obj.getORset ? " from " : " to ") << obj.name;
+        outFile << " { id is " << obj.receiverid << " }"
+                << "\n";
+    }
+}
 #endif

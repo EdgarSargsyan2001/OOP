@@ -25,10 +25,10 @@ public:
     //
     bool transferMoney(int id1, int id2, int count);
     //
-    void printCustomerinfo(int id);
-    void printAllCustomerinfo();
-    void printAllCustomerHistory();
-    void outAllCustomersInfoToFile(std::fstream &outFile);
+    void printAllCustomerinfo() const;
+    void printAllCustomerHistory() const;
+    void outAllCustomersInfoToFile(std::fstream &outFile) const;
+    void outAllTransferMoneyInfoToFile(std::fstream &outFile) const;
 
 private:
     std::vector<Customer> _arr;
@@ -81,18 +81,14 @@ bool Bank::transferMoney(int id1, int id2, int count)
 {
     return getCustomer(id1).transferMoney(getCustomer(id2), count);
 }
-void Bank::printCustomerinfo(int id)
-{
-    getCustomer(id).printInfo();
-}
-void Bank::printAllCustomerinfo()
+void Bank::printAllCustomerinfo() const
 {
     for (int i = 0; i < _arr.size(); ++i)
     {
         _arr[i].printInfo();
     }
 }
-void Bank::printAllCustomerHistory()
+void Bank::printAllCustomerHistory() const
 {
     bool haveTransfer = false;
     for (int i = 0; i < _arr.size(); ++i)
@@ -103,12 +99,19 @@ void Bank::printAllCustomerHistory()
     if (!haveTransfer)
         std::cout << "no transfers\n";
 }
-void Bank::outAllCustomersInfoToFile(std::fstream &outFile)
+void Bank::outAllCustomersInfoToFile(std::fstream &outFile) const
 {
     for (int i = 0; i < _arr.size(); ++i)
     {
         outFile
             << _arr[i].getName() << ',' << _arr[i].getAge() << ',' << _arr[i].getMony() << '\n';
+    }
+}
+void Bank::outAllTransferMoneyInfoToFile(std::fstream &outFile) const
+{
+    for (int i = 0; i < _arr.size(); ++i)
+    {
+        _arr[i].outTransferMoneyInfoToFile(outFile);
     }
 }
 

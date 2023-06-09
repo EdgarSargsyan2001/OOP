@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-std::vector<std::string> split(std::string str)
+std::vector<std::string> split(const std::string &str)
 {
     std::vector<std::string> ans;
     std::string word;
@@ -49,7 +49,7 @@ bool initFromFile(Bank &b)
     fs.close();
     return true;
 }
-bool saveInFile(Bank &b)
+bool saveInFile(const Bank &b)
 {
     std::fstream fs;
     fs.open("users.csv", std::ios::out);
@@ -59,6 +59,19 @@ bool saveInFile(Bank &b)
         return false;
     }
     b.outAllCustomersInfoToFile(fs);
+    fs.close();
+    return true;
+}
+bool saveTransferInfoInFile(const Bank &b)
+{
+    std::fstream fs;
+    fs.open("saveTransferInfoInFile.txt", std::ios::app);
+    if (!fs.is_open())
+    {
+        std::cout << "ERROR: can not open output file\n";
+        return false;
+    }
+    b.outAllTransferMoneyInfoToFile(fs);
     fs.close();
     return true;
 }
@@ -125,7 +138,7 @@ void commands(Bank &b)
         std::cout << ":2: find Customers  \n";
         std::cout << ":3: print Customer info with id \n";
         std::cout << ":4: print All Customer info \n";
-        std::cout << ":5: print All Customer History \n";
+        std::cout << ":5: print All Transfer History \n";
 
         std::cout << "enter comand ";
         int n;
@@ -170,6 +183,11 @@ int main()
 
     // ===== update info in file ====
     if (!saveInFile(ACBA))
+    {
+        return 1;
+    };
+    // ===== save TransferInfo in file ====
+    if (!saveTransferInfoInFile(ACBA))
     {
         return 1;
     };
